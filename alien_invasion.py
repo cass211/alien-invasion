@@ -1,5 +1,3 @@
-
-"""pygame window"""
 import sys
 from time import sleep
 
@@ -10,6 +8,7 @@ from game_stats import GameStats
 from ship import Ship
 from bullet import Bullet
 from alien import Alien
+
 
 class AlienInvasion:
     """Overall class to manage game assets and behavior"""
@@ -23,9 +22,9 @@ class AlienInvasion:
             (self.settings.screen_width, self.settings.screen_height))
         pygame.display.set_caption("Alien Invasion")
 
+
         # Create an instance to store game statistics.
         self.stats = GameStats(self)
-
 
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
@@ -37,6 +36,7 @@ class AlienInvasion:
         """start the main loop for the game"""
         while True:
             self._check_events()
+
             if self.stats.game_active:
                 self.ship.update()
                 self._update_bullets()
@@ -87,6 +87,8 @@ class AlienInvasion:
         for bullet in self.bullets.copy():
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
+
+        self._check_bullet_alien_collisions()
 
     def _check_bullet_alien_collisions(self):
         """Respond to bullet-alien collisions."""
@@ -139,7 +141,6 @@ class AlienInvasion:
 
             # Pause.
             sleep(0.5)
-
         else:
             self.stats.game_active = False
 
@@ -183,7 +184,7 @@ class AlienInvasion:
         """Drop the entire fleet and change the fleet's direction."""
         for alien in self.aliens.sprites():
             alien.rect.y += self.settings.fleet_drop_speed
-            self.settings.fleet_direction *= -1
+        self.settings.fleet_direction *= -1
 
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen."""
